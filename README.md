@@ -16,15 +16,27 @@ filmmaking education.
 Just open `index.html` in any browser — no server required.
 
 ## Deploy to GitHub Pages
-1. Create a new repository on GitHub.
-2. Push this folder:
+1. Push this folder to a GitHub repository:
    ```bash
    git remote add origin https://github.com/<your-username>/<repo-name>.git
    git branch -M main
    git push -u origin main
    ```
-3. In the repo: **Settings → Pages → Build and deployment → Source: Deploy from a branch → `main` / `(root)`**.
-4. Your site goes live at `https://<your-username>.github.io/<repo-name>/`.
+2. **Make the repository public.** GitHub Pages is only available for *private* repos on paid plans
+   (Pro / Team / Enterprise). On the Free plan the repo must be public.
+   `Settings → General → Danger Zone → Change repository visibility → Make public`
+   (or click the `Private` badge next to the repo name).
+3. Enable Pages: `Settings → Pages → Build and deployment → Source: Deploy from a branch →
+   Branch: main → Folder: /(root) → Save`.
+4. Wait ~1 minute. Your site is live at `https://<your-username>.github.io/<repo-name>/`
+
+> A `.nojekyll` file is included so the site is served exactly as written, with no Jekyll processing.
+> Note: a published GitHub Pages site is **public to the internet** even if the repo is private.
+
+## Notes
+- The 11 student films are shown as thumbnail cards that open on YouTube — the channel disables
+  inline embedding (error 153), so direct `<iframe>` players cannot be used.
+- Everything is in a single `index.html`; there is no build step and no external dependency.
 
 ## Disclaimer
 Independent, non-commercial study visualization. Not affiliated with the authors or IEEE.

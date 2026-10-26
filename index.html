@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>From Craftsmen to Curators — Analyzing GenAI Filmmaking Education</title>
+<meta name="description" content="An interactive analysis of the IEEE TLT paper on cognitive friction, the curatorial shift, and the assessment paradox in generative-AI filmmaking education." />
+<style>
+  :root{
+    --bg:#0a0b10;
+    --bg-2:#0f111a;
+    --panel:#14161f;
+    --panel-2:#191c27;
+    --line:#262a38;
+    --txt:#e9eaf0;
+    --muted:#9aa1b2;
+    --gold:#e8b04b;
+    --gold-soft:#f3d291;
+    --blue:#5b9dff;
+    --teal:#46d6c4;
+    --purple:#b388ff;
+    --rose:#ff7a8a;
+    --shadow:0 18px 50px rgba(0,0,0,.45);
+    --radius:18px;
+    --maxw:1160px;
+    --serif:"Playfair Display","Iowan Old Style","Georgia",serif;
+    --sans:"Inter","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(232,176,75,.10), transparent 60%),
+      radial-gradient(900px 500px at -10% 10%, rgba(91,157,255,.10), transparent 55%),
+      var(--bg);
+    color:var(--txt);
+    font-family:var(--sans);
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none;}
+  ::selection{background:rgba(232,176,75,.3);}
+
+  /* ---------- scroll progress ---------- */
+  #progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--teal));z-index:100;transition:width .1s linear;}
+
+  /* ---------- nav ---------- */
+  header.nav{
+    position:sticky;top:0;z-index:60;
+    backdrop-filter:blur(12px);
+    background:rgba(10,11,16,.72);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;gap:18px;padding:14px 22px;}
+  .brand{font-family:var(--serif);font-weight:700;font-size:18px;letter-spacing:.3px;white-space:nowrap;}
+  .brand span{color:var(--gold);}
+  .nav-links{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap;}
+  .nav-links a{
+    font-size:13px;color:var(--muted);padding:7px 11px;border-radius:10px;transition:.2s;
+    border:1px solid transparent;
+  }
+  .nav-links a:hover{color:var(--txt);background:var(--panel);border-color:var(--line);}
+  .nav-toggle{display:none;}
+
+  /* ---------- layout ---------- */
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px;}
+  section{padding:74px 0;border-top:1px solid rgba(38,42,56,.5);}
+  section:first-of-type{border-top:none;}
+  .eyebrow{
+    text-transform:uppercase;letter-spacing:.22em;font-size:12px;color:var(--gold);
+    font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--gold);display:inline-block;}
+  h2.title{font-family:var(--serif);font-size:clamp(26px,4vw,40px);line-height:1.15;margin:0 0 6px;font-weight:700;}
+  .lede{color:var(--muted);max-width:760px;font-size:16px;margin:14px 0 0;}
+
+  /* ---------- hero ---------- */
+  .hero{
+    min-height:92vh;display:flex;flex-direction:column;justify-content:center;
+    padding:90px 22px 60px;position:relative;
+  }
+  .hero .filmstrip{
+    position:absolute;inset:0;opacity:.10;pointer-events:none;
+    background-image:repeating-linear-gradient(90deg,#000 0 14px,transparent 14px 30px);
+    -webkit-mask-image:linear-gradient(180deg,transparent,#000 30%,#000 70%,transparent);
+            mask-image:linear-gradient(180deg,transparent,#000 30%,#000 70%,transparent);
+  }
+  .hero-inner{max-width:var(--maxw);margin:0 auto;position:relative;z-index:2;}
+  .tag{
+    display:inline-flex;align-items:center;gap:8px;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--gold-soft);border:1px solid rgba(232,176,75,.35);background:rgba(232,176,75,.08);
+    padding:7px 14px;border-radius:999px;margin-bottom:26px;
+  }
+  .tag .dot{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold);}
+  .hero h1{
+    font-family:var(--serif);font-weight:800;line-height:1.05;
+    font-size:clamp(34px,6.4vw,72px);margin:0 0 8px;letter-spacing:-.5px;
+  }
+  .hero h1 .accent{
+    background:linear-gradient(120deg,var(--gold),var(--gold-soft));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero .sub{font-size:clamp(16px,2.2vw,21px);color:var(--muted);max-width:720px;margin:18px 0 0;}
+  .authors{margin-top:30px;display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;color:#c7ccd8;font-size:14.5px;}
+  .authors b{color:var(--txt);font-weight:600;}
+  .venue{
+    margin-top:22px;display:inline-flex;gap:10px;align-items:center;font-size:13px;color:var(--muted);
+    border:1px solid var(--line);background:var(--panel);padding:9px 14px;border-radius:12px;
+  }
+  .venue b{color:var(--teal);}
+  .scrollcue{margin-top:46px;color:var(--muted);font-size:13px;display:flex;align-items:center;gap:10px;}
+  .scrollcue .mouse{width:22px;height:34px;border:2px solid var(--muted);border-radius:12px;position:relative;}
+  .scrollcue .mouse::after{content:"";position:absolute;top:6px;left:50%;transform:translateX(-50%);width:3px;height:7px;background:var(--gold);border-radius:2px;animation:scrolldot 1.6s infinite;}
+  @keyframes scrolldot{0%{opacity:0;top:6px}40%{opacity:1}100%{opacity:0;top:16px}}
+
+  /* ---------- metric strip ---------- */
+  .metrics{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;}
+  .metric{
+    background:linear-gradient(180deg,var(--panel),var(--bg-2));
+    border:1px solid var(--line);border-radius:16px;padding:20px 16px;text-align:center;position:relative;overflow:hidden;
+  }
+  .metric::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),transparent);}
+  .metric .num{font-family:var(--serif);font-size:clamp(26px,3.4vw,40px);font-weight:800;color:var(--gold-soft);line-height:1;}
+  .metric .lbl{font-size:12.5px;color:var(--muted);margin-top:8px;}
+
+  /* ---------- cards ---------- */
+  .grid{display:grid;gap:18px;}
+  .g2{grid-template-columns:repeat(2,1fr);}
+  .g3{grid-template-columns:repeat(3,1fr);}
+  .g4{grid-template-columns:repeat(4,1fr);}
+  .card{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px;transition:.25s;position:relative;
+  }
+  .card:hover{transform:translateY(-3px);border-color:rgba(232,176,75,.4);box-shadow:var(--shadow);}
+  .card h3{font-family:var(--serif);font-size:20px;margin:0 0 10px;font-weight:700;}
+  .card p{color:var(--muted);font-size:14.5px;margin:0;}
+  .kicker{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:10px;}
+
+  /* RQ cards */
+  .rq .num-badge{
+    width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+    font-family:var(--serif);font-weight:800;font-size:20px;color:#0a0b10;background:linear-gradient(135deg,var(--gold),var(--gold-soft));margin-bottom:14px;
+  }
+  .rq h3{font-size:18px;}
+  .pill{display:inline-block;font-size:11px;color:var(--teal);border:1px solid rgba(70,214,196,.35);background:rgba(70,214,196,.08);padding:3px 9px;border-radius:999px;margin-top:12px;}
+
+  /* ---------- abstract ---------- */
+  .abstract-card{
+    background:linear-gradient(135deg,var(--panel-2),var(--panel));
+    border:1px solid var(--line);border-radius:var(--radius);padding:30px 32px;position:relative;
+  }
+  .abstract-card .quote-mark{position:absolute;top:10px;right:22px;font-family:var(--serif);font-size:90px;color:rgba(232,176,75,.12);line-height:1;}
+  .abstract-card p{font-size:16px;color:#d4d8e2;margin:0 0 14px;}
+  .abstract-card p:last-child{margin-bottom:0;}
+  .term-zh{color:var(--gold-soft);}
+
+  /* ---------- methodology diagram ---------- */
+  .tri-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:26px;align-items:center;}
+  .tri-svg{width:100%;height:auto;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px;}
+  .tri-node{fill:var(--panel-2);stroke:var(--line);}
+  .tri-center{fill:rgba(232,176,75,.12);stroke:var(--gold);}
+  .tri-text{fill:var(--txt);font-size:13px;font-family:var(--sans);}
+  .tri-sub{fill:var(--muted);font-size:10.5px;}
+
+  /* ---------- findings stat cards ---------- */
+  .stat{display:flex;flex-direction:column;gap:6px;}
+  .stat .big{font-family:var(--serif);font-size:34px;font-weight:800;color:var(--gold-soft);}
+  .stat .desc{font-size:13.5px;color:var(--muted);}
+
+  /* ---------- inverted bloom ---------- */
+  .bloom-wrap{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:center;}
+  .bloom-svg{width:100%;height:auto;}
+  .bloom-tier{cursor:pointer;transition:.2s;}
+  .bloom-tier polygon{stroke:var(--line);stroke-width:1.5;transition:.2s;}
+  .bloom-tier:hover polygon{stroke:var(--gold);}
+  .bloom-tier.active polygon{stroke:var(--gold);stroke-width:2.5;filter:drop-shadow(0 0 10px rgba(232,176,75,.4));}
+  .bloom-label{fill:var(--txt);font-size:14px;font-weight:700;font-family:var(--serif);text-anchor:middle;}
+  .bloom-sub{fill:var(--muted);font-size:9.5px;text-anchor:middle;}
+  .bloom-panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:26px;min-height:280px;}
+  .bloom-panel .lv{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  .bloom-panel h3{font-family:var(--serif);font-size:24px;margin:8px 0 10px;}
+  .bloom-panel p{color:var(--muted);font-size:15px;margin:0;}
+  .bloom-panel .order{display:inline-block;margin-top:16px;font-size:12px;color:var(--teal);border:1px solid rgba(70,214,196,.3);padding:4px 10px;border-radius:999px;}
+
+  /* ---------- donut ---------- */
+  .donut-wrap{display:grid;grid-template-columns:220px 1fr;gap:26px;align-items:center;}
+  .donut{
+    width:200px;height:200px;border-radius:50%;position:relative;margin:0 auto;
+    background:conic-gradient(var(--gold) 0 54.54%, var(--blue) 54.54% 81.81%, var(--teal) 81.81% 90.9%, var(--purple) 90.9% 100%);
+  }
+  .donut::after{content:"";position:absolute;inset:26px;border-radius:50%;background:var(--panel);}
+  .donut-legend{display:flex;flex-direction:column;gap:12px;}
+  .legend-row{display:flex;align-items:center;gap:12px;font-size:14.5px;}
+  .legend-row .sw{width:14px;height:14px;border-radius:4px;flex:0 0 auto;}
+  .legend-row .pct{margin-left:auto;font-family:var(--serif);font-weight:700;color:var(--gold-soft);}
+
+  /* ---------- workflow timeline ---------- */
+  .timeline{position:relative;margin-top:10px;padding-left:8px;}
+  .timeline::before{content:"";position:absolute;left:18px;top:6px;bottom:6px;width:2px;background:linear-gradient(180deg,var(--gold),var(--teal));}
+  .tl-item{position:relative;padding:0 0 26px 52px;}
+  .tl-item .dot{position:absolute;left:9px;top:2px;width:20px;height:20px;border-radius:50%;background:var(--bg);border:3px solid var(--gold);display:flex;align-items:center;justify-content:center;}
+  .tl-item .phase{font-size:12px;color:var(--gold);letter-spacing:.1em;font-weight:700;}
+  .tl-item h4{font-family:var(--serif);font-size:18px;margin:4px 0 6px;}
+  .tl-item p{color:var(--muted);font-size:14px;margin:0;}
+
+  /* ---------- constructs ---------- */
+  .construct{border-top:3px solid var(--gold);}
+  .construct.c2{border-top-color:var(--blue);}
+  .construct.c3{border-top-color:var(--rose);}
+  .construct .cidx{font-family:var(--serif);font-size:30px;color:rgba(255,255,255,.18);font-weight:800;}
+  .construct .dim{margin-top:14px;display:flex;flex-wrap:wrap;gap:7px;}
+  .construct .dim span{font-size:11.5px;color:var(--muted);border:1px solid var(--line);padding:4px 9px;border-radius:8px;}
+  .construct .bc{margin-top:14px;font-size:12.5px;color:var(--teal);}
+
+  /* ---------- guidelines ---------- */
+  .guide{display:flex;gap:18px;align-items:flex-start;}
+  .guide .gnum{font-family:var(--serif);font-size:34px;font-weight:800;color:var(--gold);line-height:1;flex:0 0 auto;width:54px;text-align:center;}
+  .guide h3{font-family:var(--serif);font-size:19px;margin:0 0 8px;}
+  .guide p{color:var(--muted);font-size:14.5px;margin:0;}
+
+  /* ---------- case compare ---------- */
+  .case{border-left:4px solid var(--line);padding:14px 18px;background:var(--panel);border-radius:0 14px 14px 0;}
+  .case.high{border-left-color:var(--teal);}
+  .case.mid{border-left-color:var(--blue);}
+  .case.low{border-left-color:var(--rose);}
+  .case .tier{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;}
+  .case.high .tier{color:var(--teal);}
+  .case.mid .tier{color:var(--blue);}
+  .case.low .tier{color:var(--rose);}
+  .case h4{font-family:var(--serif);font-size:18px;margin:4px 0 6px;}
+  .case p{color:var(--muted);font-size:13.5px;margin:0;}
+
+  /* ---------- paradox ---------- */
+  .paradox-box{background:linear-gradient(135deg,rgba(255,122,138,.08),var(--panel));border:1px solid rgba(255,122,138,.3);border-radius:var(--radius);padding:26px;}
+  .paradox-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:14px;}
+
+  /* ---------- limitations / conclusion ---------- */
+  .lim-list{list-style:none;padding:0;margin:0;display:grid;gap:12px;}
+  .lim-list li{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;color:var(--muted);font-size:14.5px;display:flex;gap:12px;}
+  .lim-list li b{color:var(--txt);}
+
+  .conclusion{background:linear-gradient(135deg,var(--panel-2),var(--panel));border:1px solid var(--line);border-radius:var(--radius);padding:32px;}
+  .conclusion h2{font-family:var(--serif);font-size:28px;margin:0 0 14px;}
+  .conclusion p{color:#d4d8e2;font-size:15.5px;margin:0 0 12px;}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--line);padding:40px 22px;color:var(--muted);font-size:13px;}
+  .foot-inner{max-width:var(--maxw);margin:0 auto;}
+  .cite{background:var(--bg-2);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-top:16px;font-size:13px;color:#b9bfcc;line-height:1.6;}
+  .disclaimer{margin-top:18px;font-size:12px;color:#6f7585;}
+
+  /* ---------- reveal ---------- */
+  .reveal{opacity:0;transform:translateY(24px);transition:.7s cubic-bezier(.2,.7,.2,1);}
+  .reveal.in{opacity:1;transform:none;}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:900px){
+    .metrics{grid-template-columns:repeat(3,1fr);}
+    .g2,.g3,.g4,.tri-wrap,.bloom-wrap,.donut-wrap{grid-template-columns:1fr;}
+    .paradox-stats{grid-template-columns:1fr;}
+    .nav-links{display:none;}
+  }
+  @media(max-width:520px){
+    .metrics{grid-template-columns:repeat(2,1fr);}
+    section{padding:54px 0;}
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand">Craftsmen <span>→</span> Curators</div>
+    <nav class="nav-links">
+      <a href="#overview">Overview</a>
+      <a href="#questions">Questions</a>
+      <a href="#method">Method</a>
+      <a href="#findings">Findings</a>
+      <a href="#theory">Theory</a>
+      <a href="#framework">Framework</a>
+      <a href="#guidelines">Guidelines</a>
+      <a href="#limits">Limits</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" style="border-top:none;">
+  <div class="filmstrip"></div>
+  <div class="hero-inner">
+    <div class="tag"><span class="dot"></span> IEEE Transactions on Learning Technologies · 2026</div>
+    <h1>From <span class="accent">Craftsmen</span> to <span class="accent">Curators</span></h1>
+    <p class="sub">Navigating <em>Cognitive Friction</em> in Generative‑AI Filmmaking Education — an interactive analysis of a 13‑week, project‑based learning study with 32 Master of Arts students.</p>
+    <div class="authors">
+      <span><b>Tianyi Zhang</b>, Xian Xu, Xiya Feng, Shiqin Hou, Hui Li, Anyi Rao</span>
+    </div>
+    <div class="venue">🎓 <b>Hong Kong University of Science and Technology</b> · DOI 10.1109/TLT.2026.3739765 · Author's version</div>
+    <div class="scrollcue"><span class="mouse"></span> Scroll to explore the analysis</div>
+  </div>
+</section>
+
+<div class="wrap">
+
+<!-- OVERVIEW / ABSTRACT -->
+<section id="overview">
+  <div class="eyebrow reveal">Abstract &amp; Big Picture</div>
+  <h2 class="title reveal">What the paper is about</h2>
+  <p class="lede reveal">An exploratory multiple‑case study of how arts students learn to make films with generative AI — and how that reshapes their creative identity, cognition, and how we should assess them.</p>
+
+  <div class="abstract-card reveal" style="margin-top:28px;">
+    <div class="quote-mark">“</div>
+    <p>The study investigates the educational effectiveness of a 13‑week Project‑Based Learning (PBL) course involving <b>32 Master of Arts students</b> for AI filmmaking. Grounded in <b>Cognitive Load Theory</b> and the <b>Revised Bloom's Taxonomy</b>, the authors theorize a structural transition in student creative identity: from traditional physical <span class="term-zh">“craftsmen”</span> to <span class="term-zh">“curators of probabilities.”</span></p>
+    <p>Three core findings emerge: (1) students navigate <b>cognitive friction</b> and operational overhead — prompt fatigue, hallucination management, the “gacha” nature of AI; (2) adaptive collaborative workflows emerge; and (3) an <b>assessment paradox</b> appears, where product‑oriented rubrics fail to capture human–AI co‑creation. Students traverse the Revised Bloom's Taxonomy <b>inversely</b>, shifting from technical execution to aesthetic curation.</p>
+  </div>
+
+  <div class="metrics reveal" style="margin-top:28px;">
+    <div class="metric"><div class="num" data-count="32">0</div><div class="lbl">MA students</div></div>
+    <div class="metric"><div class="num" data-count="11">0</div><div class="lbl">project teams</div></div>
+    <div class="metric"><div class="num" data-count="13">0</div><div class="lbl">week course</div></div>
+    <div class="metric"><div class="num" data-count="9">0</div><div class="lbl">AI tools / project</div></div>
+    <div class="metric"><div class="num" data-count="100" data-suffix="%">0</div><div class="lbl">multi‑tool adoption</div></div>
+    <div class="metric"><div class="num" data-count="3">0</div><div class="lbl">core constructs</div></div>
+  </div>
+</section>
+
+<!-- RESEARCH QUESTIONS -->
+<section id="questions">
+  <div class="eyebrow reveal">Research Questions</div>
+  <h2 class="title reveal">Three questions that drive the study</h2>
+  <p class="lede reveal">The authors move beyond the conventional Teacher–AI–Student triad and propose a collaborative <b>Teacher–Student–AI</b> triad inside a PBL context.</p>
+
+  <div class="grid g3" style="margin-top:26px;">
+    <div class="card rq reveal">
+      <div class="num-badge">1</div>
+      <div class="kicker">Perception &amp; Practice</div>
+      <h3>How do students perceive &amp; navigate cognitive friction?</h3>
+      <p>How do art students experience the technical and creative challenges mediated by generative AI tools within a semi‑prescribed filmmaking curriculum?</p>
+      <span class="pill">RQ1</span>
+    </div>
+    <div class="card rq reveal">
+      <div class="num-badge">2</div>
+      <div class="kicker">Competency Acquisition</div>
+      <h3>What cognitive strategies &amp; workflows emerge?</h3>
+      <p>What strategies do students develop to reconcile algorithmic stochasticity (the “gacha” nature of AI) with their own artistic intentionality?</p>
+      <span class="pill">RQ2</span>
+    </div>
+    <div class="card rq reveal">
+      <div class="num-badge">3</div>
+      <div class="kicker">Educational Effectiveness</div>
+      <h3>What design &amp; assessment guidelines follow?</h3>
+      <p>Based on cognitive shifts and the process/product discrepancy, what pedagogical and assessment guidelines optimize AI‑supported arts education?</p>
+      <span class="pill">RQ3</span>
+    </div>
+  </div>
+</section>
+
+<!-- METHODOLOGY -->
+<section id="method">
+  <div class="eyebrow reveal">Methodology</div>
+  <h2 class="title reveal">A triangulated, qualitative case study</h2>
+  <p class="lede reveal">Approved by the HAREC ethics committee (HREP‑20250566). The design cross‑validates three independent data streams and is interpreted through a dual theoretical lens.</p>
+
+  <div class="tri-wrap reveal" style="margin-top:28px;">
+    <svg class="tri-svg" viewBox="0 0 460 320" role="img" aria-label="Triangulation framework">
+      <!-- center -->
+      <polygon class="tri-center" points="230,150 300,190 230,230 160,190"/>
+      <text class="tri-text" x="230" y="186" text-anchor="middle" style="font-size:12px;font-weight:700;">Findings</text>
+      <text class="tri-sub" x="230" y="202" text-anchor="middle">cross‑validated</text>
+      <!-- three nodes -->
+      <rect class="tri-node" x="20" y="40" width="170" height="80" rx="12"/>
+      <text class="tri-text" x="105" y="68" text-anchor="middle">Making‑of Docs</text>
+      <text class="tri-sub" x="105" y="86" text-anchor="middle">scripts · storyboards</text>
+      <text class="tri-sub" x="105" y="100" text-anchor="middle">raw AI assets · WeChat</text>
+
+      <rect class="tri-node" x="270" y="40" width="170" height="80" rx="12"/>
+      <text class="tri-text" x="355" y="68" text-anchor="middle">Semi‑structured</text>
+      <text class="tri-text" x="355" y="84" text-anchor="middle">Interviews</text>
+      <text class="tri-sub" x="355" y="102" text-anchor="middle">11 teams · ~1h each</text>
+
+      <rect class="tri-node" x="145" y="230" width="170" height="80" rx="12"/>
+      <text class="tri-text" x="230" y="258" text-anchor="middle">Marking Matrix</text>
+      <text class="tri-sub" x="230" y="276" text-anchor="middle">10 dims · 7‑pt Likert</text>
+      <text class="tri-sub" x="230" y="290" text-anchor="middle">ICC + Cohen's κ</text>
+
+      <line x1="105" y1="120" x2="195" y2="160" stroke="#3a3f52" stroke-width="2"/>
+      <line x1="355" y1="120" x2="265" y2="160" stroke="#3a3f52" stroke-width="2"/>
+      <line x1="230" y1="230" x2="230" y2="190" stroke="#3a3f52" stroke-width="2"/>
+    </svg>
+
+    <div>
+      <div class="card reveal" style="margin-bottom:16px;">
+        <div class="kicker">Dual Theoretical Lens</div>
+        <h3>Cognitive Load Theory + Revised Bloom's Taxonomy</h3>
+        <p>CLT explains the mental weariness of prompt negotiation; RBT frames the surprising <b>inverse</b> traversal students make when creating with GenAI.</p>
+      </div>
+      <div class="card reveal">
+        <div class="kicker">Participants</div>
+        <h3>32 MA students · 11 teams</h3>
+        <p>5 male / 27 female, mostly arts backgrounds. They produced a biographical film about the university founder with full autonomy over tools, style, and workflow — a “semi‑prescribed” curriculum.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid g3 reveal" style="margin-top:22px;">
+    <div class="card"><div class="kicker">Analysis Protocol</div><h3>Human‑in‑the‑loop</h3><p>AI‑assisted (Gemini Pro) deductive first pass + inductive refinement; humans retained full control of axial &amp; selective coding.</p></div>
+    <div class="card"><div class="kicker">Reliability</div><h3>Substantial agreement</h3><p>80.0% percent agreement; Cohen's κ = 0.73 (p&lt;.001) on a double‑coded 20% transcript subset.</p></div>
+    <div class="card"><div class="kicker">Case Selection</div><h3>Anti‑survivor‑bias</h3><p>Three purposively sampled groups span high (G3), medium (G4) and low (G2) performance tiers for balanced analysis.</p></div>
+  </div>
+</section>
+
+<!-- FINDINGS -->
+<section id="findings">
+  <div class="eyebrow reveal">Results — answering the RQs</div>
+  <h2 class="title reveal">What the students actually experienced</h2>
+
+  <!-- RQ1 -->
+  <h3 style="font-family:var(--serif);font-size:22px;margin:34px 0 6px;" class="reveal">RQ1 · Perceiving &amp; navigating cognitive friction</h3>
+  <p class="lede reveal">Four phenomena describe how students met the friction inherent in generative tools.</p>
+
+  <div class="grid g2 reveal" style="margin-top:18px;">
+    <div class="card">
+      <div class="kicker">Multi‑tool pipelines</div>
+      <h3>100% used cross‑platform stacks</h3>
+      <div class="stat" style="margin-top:10px;"><div class="big">≈9</div><div class="desc">AI applications per project on average — LLMs, image/video models, audio generators, post‑production. 72.7% used Midjourney for concept; 100% used tools like JiMeng to fix local landmarks &amp; faces.</div></div>
+    </div>
+    <div class="card">
+      <div class="kicker">The “Gacha” mechanic</div>
+      <h3>Stochastic, not deterministic</h3>
+      <div class="stat" style="margin-top:10px;"><div class="big">4–10</div><div class="desc">prompt iterations per image; only <b>33.3%</b> of a typical 15–30s clip stayed usable; audio synthesis yielded just 10–20%. Brute‑force iteration to harvest brief usable fragments.</div></div>
+    </div>
+    <div class="card">
+      <div class="kicker">Re‑designing around models</div>
+      <h3>Scripts bend to AI boundaries</h3>
+      <div class="stat" style="margin-top:10px;"><div class="big">90.9%</div><div class="desc">of groups modified storyboards/narratives. Strategies: scene substitution (72.7%), cinematographic bypasses (63.6%), and reframing away from photorealism (45.4%).</div></div>
+    </div>
+    <div class="card">
+      <div class="kicker">Hidden costs</div>
+      <h3>Labor inversion: “working for the AI”</h3>
+      <div class="stat" style="margin-top:10px;"><div class="big">100%</div><div class="desc">relied on manual post‑production; Group 3 retouched up to 100% of images in Photoshop. Generative media shifts human labor, it doesn't eliminate it.</div></div>
+    </div>
+  </div>
+
+  <!-- RQ2 -->
+  <h3 style="font-family:var(--serif);font-size:22px;margin:40px 0 6px;" class="reveal">RQ2 · Collaborative workflows &amp; cognitive strategies</h3>
+  <p class="lede reveal">How did teams divide labor, and what did the generalized production workflow look like?</p>
+
+  <div class="donut-wrap reveal" style="margin-top:20px;">
+    <div class="donut" title="Division of labor models"></div>
+    <div class="donut-legend">
+      <div class="legend-row"><span class="sw" style="background:var(--gold)"></span> Functional Division <span class="pct">54.5%</span></div>
+      <div class="legend-row"><span class="sw" style="background:var(--blue)"></span> Mixed Division <span class="pct">27.3%</span></div>
+      <div class="legend-row"><span class="sw" style="background:var(--teal)"></span> Chronological Division <span class="pct">9.1%</span></div>
+      <div class="legend-row"><span class="sw" style="background:var(--purple)"></span> One‑Man Crew <span class="pct">9.1%</span></div>
+      <p style="color:var(--muted);font-size:13.5px;margin:6px 0 0;">Functional division segments roles by pipeline stage (text‑to‑image, image‑to‑video, music). The One‑Man Crew (Group 3, top‑performing) eliminated translation loss but scaled poorly. Mixed division offered the most resilience.</p>
+    </div>
+  </div>
+
+  <h4 style="font-family:var(--serif);font-size:18px;margin:34px 0 4px;" class="reveal">The generalized 5‑phase GenAI filmmaking workflow</h4>
+  <div class="timeline reveal">
+    <div class="tl-item"><div class="dot"></div><div class="phase">Phase 1</div><h4>Pre‑Production &amp; Concept Exploration</h4><p>Scriptwriting, scene/character grouping, exploring target visual styles with reference images.</p></div>
+    <div class="tl-item"><div class="dot"></div><div class="phase">Phase 2</div><h4>Static Asset Generation</h4><p>Shared character/scene/storyboard libraries via T2I with intensive iteration; cleanup to minimize AI artifacts.</p></div>
+    <div class="tl-item"><div class="dot"></div><div class="phase">Phase 3</div><h4>Video Generation</h4><p>I2V models, several attempts per shot to obtain a few seconds of usable footage.</p></div>
+    <div class="tl-item"><div class="dot"></div><div class="phase">Phase 4</div><h4>Audio Production</h4><p>Music / voiceover to bypass lip‑syncing limitations.</p></div>
+    <div class="tl-item"><div class="dot"></div><div class="phase">Phase 5</div><h4>Post‑Production &amp; “De‑AI”</h4><p>Cinematic re‑grounding — film grain, lens flares — to reduce the AI aesthetic and ground footage in traditional realism.</p></div>
+  </div>
+
+  <h4 style="font-family:var(--serif);font-size:18px;margin:34px 0 4px;" class="reveal">Comparative case analysis (High / Medium / Low tiers)</h4>
+  <div class="grid g3 reveal" style="margin-top:14px;">
+    <div class="case high"><div class="tier">High · Group 3</div><h4>One‑Man Crew + parallel‑universe pivot</h4><p>Re‑designed narrative away from historical accuracy; generate‑and‑test pipeline dropped shots into the timeline immediately to catch gaps early. Scored top‑tier.</p></div>
+    <div class="case mid"><div class="tier">Medium · Group 4</div><h4>Chronological division + clay style</h4><p>Clay aesthetic forgave distortions and lowered rendering complexity. Split by character/era; fragmented audio tracks revealed separate asset generation.</p></div>
+    <div class="case low"><div class="tier">Low · Group 2</div><h4>Minimalist B&amp;W line pivot</h4><p>Reactive compromise after failing facial consistency. External reviewer scored it <b>higher</b> (51) than the instructor (41) — a textbook assessment paradox.</p></div>
+  </div>
+
+  <!-- RQ3 -->
+  <h3 style="font-family:var(--serif);font-size:22px;margin:40px 0 6px;" class="reveal">RQ3 · Competency acquisition &amp; the assessment paradox</h3>
+  <p class="lede reveal">Students developed a specialized human–AI communication competency and reframed AI as either a collaborative partner (63.6%) or a subordinate “employee” (54.5%).</p>
+
+  <div class="paradox-box reveal" style="margin-top:18px;">
+    <div class="kicker" style="color:var(--rose);">The Assessment Paradox</div>
+    <h3 style="font-family:var(--serif);font-size:20px;margin:0 0 6px;">Product‑only rubrics miss the learning</h3>
+    <p style="color:var(--muted);font-size:14.5px;margin:0;">Two raters (course instructor, process‑aware; external reviewer, product‑only) diverged sharply. Inter‑rater reliability was moderate and categorical agreement slight — evidence of evaluator information asymmetry.</p>
+    <div class="paradox-stats">
+      <div class="stat"><div class="big" style="color:var(--rose);">0.488</div><div class="desc">ICC(3,1) inter‑rater reliability (moderate, p=.052)</div></div>
+      <div class="stat"><div class="big" style="color:var(--rose);">0.29</div><div class="desc">Cohen's κ on pass/fail (slight agreement)</div></div>
+      <div class="stat"><div class="big" style="color:var(--rose);">81.8%</div><div class="desc">of groups reported serendipitous “happy accidents” reshaping narrative</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- THEORY -->
+<section id="theory">
+  <div class="eyebrow reveal">Theoretical Contribution</div>
+  <h2 class="title reveal">The Inverted Revised Bloom's Taxonomy</h2>
+  <p class="lede reveal">Traditional arts pedagogy climbs Bloom's ladder bottom‑up (mechanics → creation). With GenAI, students <b>start at the top</b> (Create) and reverse‑traverse downward as they diagnose friction. Click a tier to explore.</p>
+
+  <div class="bloom-wrap reveal" style="margin-top:24px;">
+    <svg class="bloom-svg" viewBox="0 0 420 360" role="img" aria-label="Inverted Bloom's Taxonomy">
+      <!-- tiers as trapezoids, widest at top -->
+      <g class="bloom-tier active" data-key="create">
+        <polygon points="60,20 360,20 330,70 90,70" fill="#3a2f1a" stroke="#e8b04b"/>
+        <text class="bloom-label" x="210" y="40">CREATE</text>
+        <text class="bloom-sub" x="210" y="58">Vision &amp; Conceptualization</text>
+      </g>
+      <g class="bloom-tier" data-key="evaluate">
+        <polygon points="90,80 330,80 305,128 115,128" fill="#1f2a3a" stroke="#5b9dff"/>
+        <text class="bloom-label" x="210" y="100">EVALUATE</text>
+        <text class="bloom-sub" x="210" y="118">Aesthetic &amp; Quality Curation</text>
+      </g>
+      <g class="bloom-tier" data-key="analyze">
+        <polygon points="115,138 305,138 283,184 137,184" fill="#13302c" stroke="#46d6c4"/>
+        <text class="bloom-label" x="210" y="158">ANALYZE</text>
+        <text class="bloom-sub" x="210" y="176">Deconstruction &amp; Friction Diagnosis</text>
+      </g>
+      <g class="bloom-tier" data-key="apply">
+        <polygon points="137,194 283,194 263,238 157,238" fill="#2a2342" stroke="#b388ff"/>
+        <text class="bloom-label" x="210" y="214">APPLY</text>
+        <text class="bloom-sub" x="210" y="232">Precision Control &amp; Prompt Engineering</text>
+      </g>
+      <g class="bloom-tier" data-key="understand">
+        <polygon points="157,248 263,248 245,290 175,290" fill="#3a2330" stroke="#ff7a8a"/>
+        <text class="bloom-label" x="210" y="268">UNDERSTAND</text>
+        <text class="bloom-sub" x="210" y="286">Generative Logic &amp; Cinematic Grammar</text>
+      </g>
+      <g class="bloom-tier" data-key="remember">
+        <polygon points="175,300 245,300 228,340 192,340" fill="#262a38" stroke="#9aa1b2"/>
+        <text class="bloom-label" x="210" y="320">REMEMBER</text>
+        <text class="bloom-sub" x="210" y="337">Workflow Encoding</text>
+      </g>
+    </svg>
+
+    <div class="bloom-panel" id="bloomPanel">
+      <div class="lv">Tier 1 of 6 · Entry point</div>
+      <h3>Create — Vision &amp; Conceptualization</h3>
+      <p>Students initiate the creative loop directly at the top tier, translating high‑level narrative concepts into visual prototypes via natural‑language prompts. The execution burden is offloaded to the model.</p>
+      <span class="order">↓ Reverse‑traversed as friction appears</span>
+    </div>
+  </div>
+
+  <div class="grid g2 reveal" style="margin-top:26px;">
+    <div class="card">
+      <div class="kicker" style="color:var(--gold);">The Curatorial Shift</div>
+      <h3>From craftsmen to “curators of probabilities”</h3>
+      <p>CLT says traditional production imposes heavy load through manual frame‑by‑frame execution. GenAI offloads that physical load, reallocating cognition toward high‑level evaluative judgment. Friction forces active curation — through “De‑AI” re‑grounding, learners deploy aesthetic judgment to mask algorithmic artifacts. Human agency is not diminished; it relocates to curation.</p>
+    </div>
+    <div class="card">
+      <div class="kicker" style="color:var(--rose);">Need for Process‑Trace Evaluation</div>
+      <h3>Product‑only rubrics decouple from learning</h3>
+      <p>Conventional PBL rubrics assume the final artifact reflects learning. The data challenge this: Group 2's clean line‑art film concealed severe operational friction. The authors call for <b>Process‑Trace Evaluations</b> that audit prompt logs, reflective diagnostics, and human–AI negotiation histories.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FRAMEWORK -->
+<section id="framework">
+  <div class="eyebrow reveal">Exploratory Conceptual Framework</div>
+  <h2 class="title reveal">Three constructs, one sequential mechanism</h2>
+  <p class="lede reveal">Cognitive Friction → the Curatorial Shift → the Assessment Paradox. Friction from probabilistic systems drives learners to curate; that curation, in turn, hides learning inside artifacts — producing the paradox.</p>
+
+  <div class="grid g3 reveal" style="margin-top:24px;">
+    <div class="card construct">
+      <div class="cidx">01</div>
+      <div class="kicker">Construct</div>
+      <h3>Cognitive Friction</h3>
+      <p>Complements Sweller's extraneous load by adding operational strain from probabilistic model negotiation. Mental weariness from prompt fatigue, temporal inconsistency &amp; hallucination management.</p>
+      <div class="dim"><span>Visual inconsistency</span><span>Uncontrollable motion</span><span>Hallucination / artifact</span></div>
+      <div class="bc">Boundary: strong when model control is weak or stochasticity high.</div>
+    </div>
+    <div class="card construct c2">
+      <div class="cidx">02</div>
+      <div class="kicker">Construct</div>
+      <h3>The Curatorial Shift</h3>
+      <p>An inverted traversal of the Revised Bloom's Taxonomy. The transition from physical production to generated → curation → prompt fine‑tuning → post‑production → future creations.</p>
+      <div class="dim"><span>Creative Visioning</span><span>Critical Selection</span><span>Diagnostic Analysis</span><span>Prompt Adaptation</span></div>
+      <div class="bc">Boundary: stochastic generative models (Midjourney, JiMeng, Kling, Veo 3).</div>
+    </div>
+    <div class="card construct c3">
+      <div class="cidx">03</div>
+      <div class="kicker">Construct</div>
+      <h3>The Assessment Paradox</h3>
+      <p>Challenges product‑oriented assessment, responding to formative‑assessment needs. A structural decoupling between final product and actual cognitive depth, worsened by evaluator information asymmetry.</p>
+      <div class="dim"><span>Process–Product Divergence</span><span>Evaluator Asymmetry</span></div>
+      <div class="bc">Boundary: courses mixing process logs with double‑blind external review.</div>
+    </div>
+  </div>
+
+  <div class="grid g3 reveal" style="margin-top:18px;">
+    <div class="card"><div class="kicker" style="color:var(--gold);">Competency 1</div><h3>Computational Thinking via Structured Prompting</h3><p>Progression from vague natural language to parameter‑driven syntax — systematically parameterizing camera angles, lighting, and aesthetic style.</p></div>
+    <div class="card"><div class="kicker" style="color:var(--blue);">Competency 2</div><h3>Critical Curation &amp; Quality Assurance</h3><p>Hallucinations forced rigorous evaluative skills. Students act as directors who filter and reject unsatisfactory takes — not passive consumers.</p></div>
+    <div class="card"><div class="kicker" style="color:var(--teal);">Competency 3</div><h3>Adaptive Orchestration &amp; Uncertainty Tolerance</h3><p>Orchestrating 9‑tool ecosystems; the core of AI literacy is tolerating unpredictability and pivoting narratives around algorithmic affordances.</p></div>
+  </div>
+</section>
+
+<!-- GUIDELINES -->
+<section id="guidelines">
+  <div class="eyebrow reveal">Pedagogical Guidelines (RQ3)</div>
+  <h2 class="title reveal">Four actionable design guidelines</h2>
+  <p class="lede reveal">To operationalize the Teacher–Student–AI triad and resolve the tension between stochasticity and human agency.</p>
+
+  <div class="grid g2 reveal" style="margin-top:24px;">
+    <div class="card"><div class="guide"><div class="gnum">1</div><div><h3>Prioritize Aesthetic Literacy &amp; Spatial Prompting</h3><p>Position GenAI as an execution engine while reinforcing cinematic theory, composition, and lighting. Train spatial prompting (layout, camera angles) to minimize hallucinations; screen award‑winning AI films to sharpen curatorial eyes.</p></div></div></div>
+    <div class="card"><div class="guide"><div class="gnum">2</div><div><h3>Cultivate Affordance‑Based Adaptive Scripting</h3><p>Replace rigid pre‑production scripts with continuous feedback loops among scriptwriting, rendering, and storyboarding. Teach students to adapt narratives to tool affordances — turning limitations into intentional creative choices.</p></div></div></div>
+    <div class="card"><div class="guide"><div class="gnum">3</div><div><h3>Institutionalize Dual‑Track “Process‑Trace” Assessment</h3><p>Assign 50% weight to Process (instructor: computational thinking, iteration rigor, De‑AI effort) and 50% to Product (external reviewer, fully blind). Resolves the paradox and recognizes unseen curatorial labor.</p></div></div></div>
+    <div class="card"><div class="guide"><div class="gnum">4</div><div><h3>Account for Hidden Operational Costs</h3><p>Provide shared access to subscription AI ecosystems for equity; explicitly budget course timelines for iterative, stochastic workflows — asset management, manual retouching, and post‑production refinement.</p></div></div></div>
+  </div>
+</section>
+
+<!-- LIMITATIONS -->
+<section id="limits">
+  <div class="eyebrow reveal">Limitations &amp; Future Work</div>
+  <h2 class="title reveal">What the authors flag</h2>
+  <ul class="lim-list reveal" style="margin-top:22px;">
+    <li><b>Measured qualitatively.</b> Cognitive friction was inferred from interviews and logs, not quantified. Future work should add NASA‑TLX or standardized Cognitive Load scales plus multi‑rater experimental panels.</li>
+    <li><b>Narrow sample.</b> Restricted to Chinese‑speaking MA students in film/creative disciplines; tool choice skewed to regional platforms (Jimeng, Kling). Generalizability to STEM or international cohorts is untested.</li>
+    <li><b>Moving target.</b> Rapid model updates may resolve specific bottlenecks (temporal inconsistency, lip‑sync), but the core cognitive challenge — curating probabilistic outputs — likely persists across GenAI generations.</li>
+  </ul>
+</section>
+
+<!-- CONCLUSION -->
+<section id="conclusion">
+  <div class="eyebrow reveal">Conclusion</div>
+  <div class="conclusion reveal">
+    <h2>Three contributions to learning‑technologies research</h2>
+    <p>First, a selected case study of a 13‑week GenAI filmmaking course showing how a <b>Teacher–Student–AI</b> triad within PBL facilitates specific learning outcomes.</p>
+    <p>Second, an exploratory conceptual framework — grounded in Cognitive Load Theory and the Revised Bloom's Taxonomy — that conceptualizes the student transition from <b>“craftsmen” to “curators of probabilities”</b> via an inverse traversal of Bloom's.</p>
+    <p>Third, a systematic definition of the constructs, dimensions, and boundary conditions of <b>Cognitive Friction, the Curatorial Shift, and the Assessment Paradox</b> — culminating in dual‑track assessment guidelines for educators.</p>
+  </div>
+</section>
+
+</div><!-- /wrap -->
+
+<footer>
+  <div class="foot-inner">
+    <div><b style="color:var(--txt);">From Craftsmen to Curators: Navigating Cognitive Friction in Generative AI Filmmaking Education</b></div>
+    <div class="cite">
+      T. Zhang, X. Xu, X. Feng, S. Hou, H. Li, and A. Rao. <em>From Craftsmen to Curators: Navigating Cognitive Friction in Generative AI Filmmaking Education.</em> IEEE Transactions on Learning Technologies, 2026. DOI: 10.1109/TLT.2026.3739765. (Author's version — accepted for publication.)
+    </div>
+    <div class="disclaimer">This page is an independent, non‑commercial visualization &amp; analysis created for study purposes. It is not affiliated with the authors or IEEE, and is not a substitute for the original paper. All figures and statistics are reproduced from the source manuscript.</div>
+  </div>
+</footer>
+
+<script>
+  // scroll progress
+  const prog=document.getElementById('progress');
+  window.addEventListener('scroll',()=>{
+    const h=document.documentElement;
+    const sc=(h.scrollTop)/(h.scrollHeight-h.clientHeight);
+    prog.style.width=(sc*100)+'%';
+  });
+
+  // reveal on scroll
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // animated counters
+  const counters=document.querySelectorAll('.metric .num');
+  const cio=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(!e.isIntersecting)return;
+      const el=e.target;const target=+el.dataset.count;const suffix=el.dataset.suffix||'';
+      let cur=0;const step=Math.max(1,Math.ceil(target/40));
+      const t=setInterval(()=>{cur+=step;if(cur>=target){cur=target;clearInterval(t);}el.textContent=cur+suffix;},22);
+      cio.unobserve(el);
+    });
+  },{threshold:.5});
+  counters.forEach(c=>cio.observe(c));
+
+  // inverted bloom interactivity
+  const bloomData={
+    create:{lv:"Tier 1 of 6 · Entry point",t:"Create — Vision & Conceptualization",p:"Students initiate the creative loop directly at the top tier, translating high‑level narrative concepts into visual prototypes via natural‑language prompts. The execution burden is offloaded to the model.",ord:"↓ Reverse‑traversed as friction appears"},
+    evaluate:{lv:"Tier 2 of 6",t:"Evaluate — Aesthetic & Quality Curation",p:"Upon receiving probabilistic outputs, students critically audit artifacts against artistic intent — judging visual continuity, emotional resonance, and narrative pacing. This is the new locus of human authorship.",ord:"Curator mindset"},
+    analyze:{lv:"Tier 3 of 6",t:"Analyze — Deconstruction & Friction Diagnosis",p:"When outputs diverge (character morphing, anatomical hallucinations), students deconstruct the failure: is it prompt ambiguity, parameter misconfiguration, or a model limitation?",ord:"Diagnostic discovery"},
+    apply:{lv:"Tier 4 of 6",t:"Apply — Precision Control & Prompt Engineering",p:"To resolve friction, students apply domain‑specific language (focal length, camera moves) or modify script boundaries to match tool affordances.",ord:"Iterative control"},
+    understand:{lv:"Tier 5 of 6",t:"Understand — Generative Logic & Cinematic Grammar",p:"Through continuous loops, students internalize the mechanics of diffusion latent spaces and structural cinematic grammar.",ord:"Latent‑space intuition"},
+    remember:{lv:"Tier 6 of 6 · Terminal stage",t:"Remember — Workflow Encoding & Metadata",p:"Students consolidate successful prompt syntaxes, tool configs, and pipeline strategies into reusable personal prompt libraries and workflow templates for future projects.",ord:"Reusable memory"}
+  };
+  const panel=document.getElementById('bloomPanel');
+  document.querySelectorAll('.bloom-tier').forEach(g=>{
+    g.addEventListener('click',()=>{
+      document.querySelectorAll('.bloom-tier').forEach(x=>x.classList.remove('active'));
+      g.classList.add('active');
+      const d=bloomData[g.dataset.key];
+      panel.innerHTML=`<div class="lv">${d.lv}</div><h3>${d.t}</h3><p>${d.p}</p><span class="order">${d.ord}</span>`;
+    });
+  });
+</script>
+</body>
+</html>

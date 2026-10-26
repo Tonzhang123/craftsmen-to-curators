@@ -256,10 +256,22 @@
   .reveal{opacity:0;transform:translateY(24px);transition:.7s cubic-bezier(.2,.7,.2,1);}
   .reveal.in{opacity:1;transform:none;}
 
+  /* ---------- films gallery ---------- */
+  .film-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+  .film-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;transition:.25s;}
+  .film-card:hover{transform:translateY(-3px);border-color:rgba(232,176,75,.4);box-shadow:var(--shadow);}
+  .film-card .vid{position:relative;width:100%;aspect-ratio:16/9;background:#000;}
+  .film-card .vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+  .film-meta{padding:14px 16px;display:flex;align-items:center;gap:12px;}
+  .film-meta .film-no{font-family:var(--serif);font-weight:800;color:var(--gold);font-size:13px;background:rgba(232,176,75,.1);border:1px solid rgba(232,176,75,.3);border-radius:8px;padding:4px 9px;flex:0 0 auto;}
+  .film-meta h4{font-family:var(--serif);font-size:17px;margin:0;line-height:1.25;}
+  .playlist-link{display:inline-flex;align-items:center;gap:8px;margin-top:20px;font-size:14px;color:var(--blue);border:1px solid rgba(91,157,255,.35);background:rgba(91,157,255,.08);padding:10px 16px;border-radius:12px;transition:.2s;}
+  .playlist-link:hover{background:rgba(91,157,255,.16);}
+
   /* ---------- responsive ---------- */
   @media(max-width:900px){
     .metrics{grid-template-columns:repeat(3,1fr);}
-    .g2,.g3,.g4,.tri-wrap,.bloom-wrap,.donut-wrap{grid-template-columns:1fr;}
+    .g2,.g3,.g4,.tri-wrap,.bloom-wrap,.donut-wrap,.film-grid{grid-template-columns:1fr;}
     .paradox-stats{grid-template-columns:1fr;}
     .nav-links{display:none;}
   }
@@ -280,6 +292,7 @@
       <a href="#questions">Questions</a>
       <a href="#method">Method</a>
       <a href="#findings">Findings</a>
+      <a href="#films">Films</a>
       <a href="#theory">Theory</a>
       <a href="#framework">Framework</a>
       <a href="#guidelines">Guidelines</a>
@@ -489,6 +502,29 @@
       <div class="stat"><div class="big" style="color:var(--rose);">81.8%</div><div class="desc">of groups reported serendipitous “happy accidents” reshaping narrative</div></div>
     </div>
   </div>
+</section>
+
+<!-- FILMS -->
+<section id="films">
+  <div class="eyebrow reveal">Student Films · 学生作品</div>
+  <h2 class="title reveal">The 11 Films of 《回響 Echo》</h2>
+  <p class="lede reveal">These are the actual course outputs from the 11 project teams (Gp1–Gp11), presented under the series title 《回響 Echo》. Listed here in playlist order; the playlist's first item is a preview trailer and is excluded, leaving the 11 finished films below. Each was produced with the multi‑tool, human–AI co‑creative workflow analyzed throughout this site.</p>
+
+  <div class="film-grid reveal" style="margin-top:26px;">
+    <div class="film-card"><div class="vid"><iframe loading="lazy" src="https://www.youtube.com/embed/5yYUgOuUzNM" title="未竟之橋 The Unfinished Bridge" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><div class="film-meta"><span class="film-no">01</span><h4>未竟之橋 · The Unfinished Bridge</h4></div></div>
+    <div class="film-card"><div class="vid"><iframe loading="lazy" src="https://www.youtube.com/embed/OkUN_B2czAQ" title="TIME" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><div class="film-meta"><span class="film-no">02</span><h4>TIME</h4></div></div>
+    <div class="film-card"><div class="vid"><iframe loading="lazy" src="https://www.youtube.com/embed/bYf-BuCqykQ" title="前路 The Road Ahead" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><div class="film-meta"><span class="film-no">03</span><h4>前路 · The Road Ahead</h4></div></div>
+    <div class="film-card"><div class="vid"><iframe loading="lazy" src="https://www.youtube.com/embed/uLoaHtW52v4" title="Pioneer of Light" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><div class="film-meta"><span class="film-no">04</span><h4>Pioneer of Light</h4></div></div>
+    <div class="film-card"><div class="vid"><iframe loading="lazy" src="https://www.youtube.com/embed/6irZDp7K1GE" title="The Letter from the Past" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><div class="film-meta"><span class="film-no">05</span><h4>The Letter from the Past</h4></div></div>
+    <div class="film-card"><div class="vid"><iframe loading="lazy" src="https://www.youtube.com/embed/VDRhRk92Mr4" title="敢為天下先 Dare to be the first" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><div class="film-meta"><span class="film-no">06</span><h4>敢為天下先 · Dare to be the first</h4></div></div>
+    <div class="film-card"><div class="vid"><iframe loading="lazy" src="https://www.youtube.com/embed/qKn0U7dsB-U" title="逆流之沙 The Upward Flow" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><div class="film-meta"><span class="film-no">07</span><h4>逆流之沙 · The Upward Flow</h4></div></div>
+    <div class="film-card"><div class="vid"><iframe loading="lazy" src="https://www.youtube.com/embed/KP8WhNAg6Fc" title="逆旅歸航 Homeward Voyage" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><div class="film-meta"><span class="film-no">08</span><h4>逆旅歸航 · Homeward Voyage</h4></div></div>
+    <div class="film-card"><div class="vid"><iframe loading="lazy" src="https://www.youtube.com/embed/wo8jan6Cqyo" title="海與橋 Sea and Bridge" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><div class="film-meta"><span class="film-no">09</span><h4>海與橋 · Sea and Bridge</h4></div></div>
+    <div class="film-card"><div class="vid"><iframe loading="lazy" src="https://www.youtube.com/embed/NCDh9dXfJ3c" title="Unbounded" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><div class="film-meta"><span class="film-no">10</span><h4>Unbounded</h4></div></div>
+    <div class="film-card"><div class="vid"><iframe loading="lazy" src="https://www.youtube.com/embed/901jxQFIE9s" title="生日餘音 The Birthday" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div><div class="film-meta"><span class="film-no">11</span><h4>生日餘音 · The Birthday</h4></div></div>
+  </div>
+
+  <a class="playlist-link" href="https://www.youtube.com/playlist?list=PLG-KDaLyUlFYZiqGgdhIs4UaXg6x7U73W" target="_blank" rel="noopener">▶ View the full playlist on YouTube (including the preview trailer)</a>
 </section>
 
 <!-- THEORY -->

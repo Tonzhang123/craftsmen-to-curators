@@ -159,11 +159,11 @@
 
   /* ---------- methodology diagram ---------- */
   .tri-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:26px;align-items:center;}
-  .tri-svg{width:100%;height:auto;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px;}
-  .tri-node{fill:var(--panel-2);stroke:var(--line);}
-  .tri-center{fill:rgba(232,176,75,.12);stroke:var(--gold);}
-  .tri-text{fill:var(--txt);font-size:13px;font-family:var(--sans);}
-  .tri-sub{fill:var(--muted);font-size:10.5px;}
+  .tri-svg{width:100%;height:auto;background:#14161f;border:1px solid #262a38;border-radius:var(--radius);padding:14px;}
+  .tri-node{fill:#191c27;stroke:#262a38;}
+  .tri-center{fill:#241f14;stroke:#e8b04b;}
+  .tri-text{fill:#e9eaf0;font-size:13px;font-family:'Inter','Segoe UI',system-ui,sans-serif;}
+  .tri-sub{fill:#9aa1b2;font-size:10.5px;font-family:'Inter','Segoe UI',system-ui,sans-serif;}
 
   /* ---------- findings stat cards ---------- */
   .stat{display:flex;flex-direction:column;gap:6px;}
@@ -177,8 +177,8 @@
   .bloom-tier polygon{stroke:var(--line);stroke-width:1.5;transition:.2s;}
   .bloom-tier:hover polygon{stroke:var(--gold);}
   .bloom-tier.active polygon{stroke:var(--gold);stroke-width:2.5;filter:drop-shadow(0 0 10px rgba(232,176,75,.4));}
-  .bloom-label{fill:var(--txt);font-size:14px;font-weight:700;font-family:var(--serif);text-anchor:middle;}
-  .bloom-sub{fill:var(--muted);font-size:9.5px;text-anchor:middle;}
+  .bloom-label{fill:#e9eaf0;font-size:14px;font-weight:700;font-family:'Playfair Display',Georgia,serif;text-anchor:middle;}
+  .bloom-sub{fill:#9aa1b2;font-size:9.5px;font-family:'Inter','Segoe UI',system-ui,sans-serif;text-anchor:middle;}
   .bloom-panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:26px;min-height:280px;}
   .bloom-panel .lv{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700;}
   .bloom-panel h3{font-family:var(--serif);font-size:24px;margin:8px 0 10px;}
@@ -382,30 +382,32 @@
   <p class="lede reveal">Approved by the HAREC ethics committee (HREP‑20250566). The design cross‑validates three independent data streams and is interpreted through a dual theoretical lens.</p>
 
   <div class="tri-wrap reveal" style="margin-top:28px;">
-    <svg class="tri-svg" viewBox="0 0 460 320" role="img" aria-label="Triangulation framework">
-      <!-- center -->
-      <polygon class="tri-center" points="230,150 300,190 230,230 160,190"/>
-      <text class="tri-text" x="230" y="186" text-anchor="middle" style="font-size:12px;font-weight:700;">Findings</text>
-      <text class="tri-sub" x="230" y="202" text-anchor="middle">cross‑validated</text>
-      <!-- three nodes -->
-      <rect class="tri-node" x="20" y="40" width="170" height="80" rx="12"/>
-      <text class="tri-text" x="105" y="68" text-anchor="middle">Making‑of Docs</text>
-      <text class="tri-sub" x="105" y="86" text-anchor="middle">scripts · storyboards</text>
-      <text class="tri-sub" x="105" y="100" text-anchor="middle">raw AI assets · WeChat</text>
+    <svg class="tri-svg" viewBox="0 0 560 400" role="img" aria-label="Triangulation framework">
+      <!-- connector lines (drawn first so shapes sit on top) -->
+      <line x1="140" y1="128" x2="228" y2="170" stroke="#3a3f52" stroke-width="2"/>
+      <line x1="420" y1="128" x2="332" y2="170" stroke="#3a3f52" stroke-width="2"/>
+      <line x1="280" y1="300" x2="280" y2="242" stroke="#3a3f52" stroke-width="2"/>
 
-      <rect class="tri-node" x="270" y="40" width="170" height="80" rx="12"/>
-      <text class="tri-text" x="355" y="68" text-anchor="middle">Semi‑structured</text>
-      <text class="tri-text" x="355" y="84" text-anchor="middle">Interviews</text>
-      <text class="tri-sub" x="355" y="102" text-anchor="middle">11 teams · ~1h each</text>
+      <!-- center hexagon -->
+      <polygon class="tri-center" points="280,158 348,200 280,242 212,200"/>
+      <text class="tri-text" x="280" y="196" text-anchor="middle" style="font-size:13px;font-weight:700;">Findings</text>
+      <text class="tri-sub" x="280" y="213" text-anchor="middle">cross‑validated</text>
 
-      <rect class="tri-node" x="145" y="230" width="170" height="80" rx="12"/>
-      <text class="tri-text" x="230" y="258" text-anchor="middle">Marking Matrix</text>
-      <text class="tri-sub" x="230" y="276" text-anchor="middle">10 dims · 7‑pt Likert</text>
-      <text class="tri-sub" x="230" y="290" text-anchor="middle">ICC + Cohen's κ</text>
+      <!-- three source nodes -->
+      <rect class="tri-node" x="20" y="40" width="200" height="88" rx="12"/>
+      <text class="tri-text" x="120" y="70" text-anchor="middle">Making‑of Docs</text>
+      <text class="tri-sub" x="120" y="90" text-anchor="middle">scripts · storyboards</text>
+      <text class="tri-sub" x="120" y="106" text-anchor="middle">raw AI assets · WeChat</text>
 
-      <line x1="105" y1="120" x2="195" y2="160" stroke="#3a3f52" stroke-width="2"/>
-      <line x1="355" y1="120" x2="265" y2="160" stroke="#3a3f52" stroke-width="2"/>
-      <line x1="230" y1="230" x2="230" y2="190" stroke="#3a3f52" stroke-width="2"/>
+      <rect class="tri-node" x="340" y="40" width="200" height="88" rx="12"/>
+      <text class="tri-text" x="440" y="70" text-anchor="middle">Semi‑structured</text>
+      <text class="tri-text" x="440" y="88" text-anchor="middle">Interviews</text>
+      <text class="tri-sub" x="440" y="108" text-anchor="middle">11 teams · ~1h each</text>
+
+      <rect class="tri-node" x="180" y="300" width="200" height="88" rx="12"/>
+      <text class="tri-text" x="280" y="330" text-anchor="middle">Marking Matrix</text>
+      <text class="tri-sub" x="280" y="350" text-anchor="middle">10 dims · 7‑pt Likert</text>
+      <text class="tri-sub" x="280" y="366" text-anchor="middle">ICC + Cohen's κ</text>
     </svg>
 
     <div>

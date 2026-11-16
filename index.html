@@ -110,6 +110,17 @@
     border:1px solid var(--line);background:var(--panel);padding:9px 14px;border-radius:12px;
   }
   .venue b{color:var(--teal);}
+  .paper-cta{
+    display:inline-flex;align-items:center;gap:9px;margin-top:24px;
+    font-size:14px;font-weight:600;color:#1a140c;letter-spacing:.01em;
+    background:linear-gradient(120deg,var(--gold),var(--gold-soft));
+    padding:12px 20px;border-radius:999px;border:1px solid var(--gold-soft);
+    box-shadow:0 8px 26px -10px rgba(232,176,75,.6);transition:transform .25s,box-shadow .25s;
+  }
+  .paper-cta:hover{transform:translateY(-2px);box-shadow:0 14px 32px -10px rgba(232,176,75,.75);}
+  .paper-cta .arrow{font-size:17px;line-height:1;}
+  .cite a{color:var(--gold-soft);text-decoration:underline;text-underline-offset:3px;}
+  .cite a:hover{color:var(--gold);}
   .scrollcue{margin-top:46px;color:var(--muted);font-size:13px;display:flex;align-items:center;gap:10px;}
   .scrollcue .mouse{width:22px;height:34px;border:2px solid var(--muted);border-radius:12px;position:relative;}
   .scrollcue .mouse::after{content:"";position:absolute;top:6px;left:50%;transform:translateX(-50%);width:3px;height:7px;background:var(--gold);border-radius:2px;animation:scrolldot 1.6s infinite;}
@@ -316,6 +327,7 @@
       <span><b>Tianyi Zhang</b>, Xian Xu, Xiya Feng, Shiqin Hou, Hui Li, Anyi Rao</span>
     </div>
     <div class="venue">🎓 <b>Hong Kong University of Science and Technology</b> · DOI 10.1109/TLT.2026.3739765 · Author's version</div>
+    <div><a class="paper-cta" href="https://ieeexplore.ieee.org/abstract/document/11719227" target="_blank" rel="noopener">Read the paper on IEEE Xplore <span class="arrow">↗</span></a></div>
     <div class="scrollcue"><span class="mouse"></span> Scroll to explore the analysis</div>
   </div>
 </section>
@@ -678,7 +690,7 @@
   <div class="foot-inner">
     <div><b style="color:var(--txt);">From Craftsmen to Curators: Navigating Cognitive Friction in Generative AI Filmmaking Education</b></div>
     <div class="cite">
-      T. Zhang, X. Xu, X. Feng, S. Hou, H. Li, and A. Rao. <em>From Craftsmen to Curators: Navigating Cognitive Friction in Generative AI Filmmaking Education.</em> IEEE Transactions on Learning Technologies, 2026. DOI: 10.1109/TLT.2026.3739765. (Author's version — accepted for publication.)
+      T. Zhang, X. Xu, X. Feng, S. Hou, H. Li, and A. Rao. <em>From Craftsmen to Curators: Navigating Cognitive Friction in Generative AI Filmmaking Education.</em> IEEE Transactions on Learning Technologies, 2026. DOI: <a href="https://ieeexplore.ieee.org/abstract/document/11719227" target="_blank" rel="noopener">10.1109/TLT.2026.3739765</a>. (<a href="https://ieeexplore.ieee.org/abstract/document/11719227" target="_blank" rel="noopener">Read on IEEE Xplore ↗</a> — Author's version, accepted for publication.)
     </div>
     <div class="disclaimer">This page is an independent, non‑commercial visualization &amp; analysis created for study purposes. It is not affiliated with the authors or IEEE, and is not a substitute for the original paper. All figures and statistics are reproduced from the source manuscript.</div>
   </div>
